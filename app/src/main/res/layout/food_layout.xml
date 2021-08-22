@@ -52,7 +52,7 @@
                 android:layout_below="@+id/tv_name"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="@string/vegetable_name_in_hindi"
+                android:text="@string/vegetable_local_name"
                 android:textAlignment="center"
                 android:textSize="18sp" />
             <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->

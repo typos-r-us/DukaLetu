@@ -25,11 +25,9 @@ import com.squareup.picasso.Picasso
 
 class MyCartActivity : AppCompatActivity() {
     var recyclerView: RecyclerView? = null
-    //RecyclerView.LayoutManager layoutManager;
     var layoutManager: LinearLayoutManager? = null
     var database: FirebaseDatabase? = null
     var allFoodData: DatabaseReference? = null
-    //  String name,nameHindi,mName,ImageUrl, det,det2,det3,det4,det5;
     var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

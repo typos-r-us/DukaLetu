@@ -40,10 +40,7 @@ class CartActivity : AppCompatActivity() {
                     data.ref.removeValue()
                 }
             }
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-
+            override fun onCancelled(error: DatabaseError) {}
         })
     }
 
@@ -58,11 +55,8 @@ class CartActivity : AppCompatActivity() {
                 }
                 rvCart.adapter = CartAdapter(cartList, activity)
             }
-
             override fun onCancelled(error: DatabaseError) {
-
             }
-
         })
     }
 }

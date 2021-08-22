@@ -29,7 +29,7 @@ class CategoryItemAdapter (val itemList: List<FoodDetailModel>, val context: Con
 
     class MyViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
         var tvName: TextView = parent.findViewById(R.id.tv_name)
-        var tvNameHindi: TextView = parent.findViewById(R.id.tv_local_name)
+        var tvLocalName: TextView = parent.findViewById(R.id.tv_local_name)
         var ivFood: ImageView = parent.findViewById(R.id.iv_food)
         var main: LinearLayout = parent.findViewById(R.id.llMain)
     }
@@ -42,9 +42,7 @@ class CategoryItemAdapter (val itemList: List<FoodDetailModel>, val context: Con
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val row = itemList[position]
         holder.tvName.text = row.foodName
-        val typeface = ResourcesCompat.getFont(context, R.font.krutihindi)
-        holder.tvNameHindi.typeface = typeface
-        holder.tvNameHindi.text = row.localFoodName
+        holder.tvLocalName.text = row.localFoodName
         Picasso.with(context).load(row.foodImage).placeholder(R.drawable.placeholder).into(holder.ivFood)
         holder.main.setOnClickListener {
             Log.e("Position adapter:", position.toString())

@@ -14,14 +14,6 @@ init {
         e.printStackTrace()
     }
 }
-   /* fun SharedPreferenceUtils(context: Context?) {
-        mContext = context
-        try {
-            pref = mContext!!.getSharedPreferences("Preference", Context.MODE_PRIVATE)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }*/
 
     fun setFlowerVeg(veg: String?) {
         val editor = pref?.edit()

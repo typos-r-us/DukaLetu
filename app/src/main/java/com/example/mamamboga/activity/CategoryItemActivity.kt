@@ -83,10 +83,8 @@ class CategoryItemActivity : AppCompatActivity() {
                 Picasso.with(baseContext).load(model.foodImage).placeholder(R.drawable.placeholder).into(viewHolder.ivFood)
                 viewHolder.tvName.setText(model.foodName)
                 viewHolder.tvLocalName.setText(model.localFoodName)
-//
-                val typeface = ResourcesCompat.getFont(this@CategoryItemActivity, R.font.krutihindi)
+
                 CustomProgressBar.dismissProgressBar()
-                viewHolder.tvLocalName.typeface = typeface
                 val clickItem: FoodDetailModel = model
                 viewHolder.setItemClickListener(object : ItemClickListener {
                     override fun onClick(view: View?, position: Int, isLongClick: Boolean) {

@@ -1,9 +1,5 @@
 package com.example.mamamboga.utils
 
-/**
- * Created by Rahul Khatri on 03, January, 2021.
- * github.com/rahulkhatri19
- **/
 
 object Constants {
     const val ONE = 1

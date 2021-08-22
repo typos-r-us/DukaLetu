@@ -173,6 +173,7 @@ class HomeActivity : AppCompatActivity(), OnSliderClickListener, ViewPagerEx.OnP
             4 -> SharedPreferenceUtils(this).setCategoryItem("salad")
             else -> Log.e("position :", position.toString())
         }
+        // Go to category activity and pass the selection to the new activity
         startActivity(Intent(this@HomeActivity, CategoryItemActivity::class.java).putExtra("ItemPosition ", position))
     }
 
@@ -214,7 +215,7 @@ class HomeActivity : AppCompatActivity(), OnSliderClickListener, ViewPagerEx.OnP
         SharedPreferenceUtils(this).setCategoryItem(stSharedPref)
         startActivity(Intent(this@HomeActivity, CategoryItemActivity::class.java))
     }
-
+    // if the device is not connected to the internet
     private fun alertDialog() {
         val builder = AlertDialog.Builder(this@HomeActivity)
         builder.setMessage("Please Connect to Internet")
@@ -233,7 +234,7 @@ class HomeActivity : AppCompatActivity(), OnSliderClickListener, ViewPagerEx.OnP
         val alert = builder.create()
         alert.show()
     }
-
+    // if the device is connected to the internet
     private fun isOnline(): Boolean {
         val result: Boolean
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
