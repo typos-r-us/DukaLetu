@@ -12,10 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_cart_layout.view.*
 
-/**
- * Created by Rahul Khatri on 14-07-2020.
- * github.com/rahulkhatri19
- **/
+
 class CartAdapter(private val cartList: MutableList<BucketModel>, val context: Context) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val cl_main = view.cl_main

@@ -79,7 +79,7 @@ class FlowerVegActivity : AppCompatActivity() {
             protected override fun onBindViewHolder(viewHolder: UserHolder, position: Int, model: AllFoodModel) {
                 Picasso.with(baseContext).load(model.Image).placeholder(R.drawable.placeholder).into(viewHolder.imageView)
                 viewHolder.txtName.setText(model.Name)
-                viewHolder.txtLocalName.setText(model.NameHindi)
+                viewHolder.txtLocalName.setText(model.localName)
                 val face2 = Typeface.createFromAsset(assets, "")
                 // Log.e("prog", "3");
                 progressDialog!!.dismiss()
@@ -88,7 +88,7 @@ class FlowerVegActivity : AppCompatActivity() {
                 viewHolder.setItemClickListener(object : ItemClickListener{
                     override fun onClick(view: View?, position: Int, isLongClick: Boolean) {
                         name = clickItem.Name
-                        localName = clickItem.NameHindi
+                        localName = clickItem.localName
                         ImageUrl = clickItem.Image
                         det = clickItem.Advt
                         det2 = clickItem.Vam

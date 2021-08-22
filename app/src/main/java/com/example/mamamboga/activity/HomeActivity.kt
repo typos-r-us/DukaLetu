@@ -14,6 +14,7 @@ import com.example.mamamboga.utils.Constants.REQUEST_CODE_UPDATE
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -32,7 +33,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import com.daimajia.slider.library.Animations.DescriptionAnimation
 import com.daimajia.slider.library.SliderLayout
@@ -43,7 +43,9 @@ import com.daimajia.slider.library.Tricks.ViewPagerEx
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_home.*
 import java.util.*
 
@@ -51,19 +53,18 @@ class HomeActivity : AppCompatActivity(), OnSliderClickListener, ViewPagerEx.OnP
     private val itemList: MutableList<ItemModel> = mutableListOf()
     private var recyclerView: RecyclerView? = null
     var adapter: HomeAdapter? = null
-    private val main: LinearLayout? = null
     var sliderLayout: SliderLayout? = null
-    var HashMapForURL: HashMap<String, String>? = null
-    var HashMapForLocal: HashMap<String, Int> = HashMap()
+    var hashMapForLocal: HashMap<String, Int> = HashMap()
     var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_home)
         getUserDetail()
         inAppUpdate()
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.title = "Menu"
+        toolbar.title = "Fruit and Mboga Menu"
         setSupportActionBar(toolbar)
         sliderLayout = findViewById(R.id.slider)
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -79,9 +80,9 @@ class HomeActivity : AppCompatActivity(), OnSliderClickListener, ViewPagerEx.OnP
         navigationView.setNavigationItemSelectedListener(this)
         AddImageUrlLocal()
         // Call below method if you want to stop Automatic sliding
-        for (name in HashMapForLocal.keys) {
+        for (name in hashMapForLocal.keys) {
             val textSliderView = TextSliderView(this@HomeActivity)
-            textSliderView.description(name).image(HashMapForLocal[name]!!).setScaleType(BaseSliderView.ScaleType.CenterCrop).setOnSliderClickListener(this)
+            textSliderView.description(name).image(hashMapForLocal[name]!!).setScaleType(BaseSliderView.ScaleType.CenterCrop).setOnSliderClickListener(this)
             textSliderView.bundle(Bundle())
             textSliderView.bundle.putString("extra", name)
             sliderLayout?.addSlider(textSliderView)
@@ -97,7 +98,7 @@ class HomeActivity : AppCompatActivity(), OnSliderClickListener, ViewPagerEx.OnP
         adapter?.setClickListener(this)
         adapter?.setClickListener(this)
         //RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getApplicationContext());
-// Try Grid layout for Recycler view.
+        // Try Grid layout for Recycler view... YaY!
         recyclerView?.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
         recyclerView?.itemAnimator = DefaultItemAnimator()
         recyclerView?.adapter = adapter
@@ -122,17 +123,12 @@ class HomeActivity : AppCompatActivity(), OnSliderClickListener, ViewPagerEx.OnP
         }
     }
 
-    fun AddImagesUrlOnline() {
-        HashMapForURL = HashMap()
-        HashMapForURL!!["All Veg"] = "http://"
-    }
-
     fun AddImageUrlLocal() {
-        HashMapForLocal = HashMap()
-        HashMapForLocal["Fruits"] = R.drawable.fruit
-        HashMapForLocal["Cauliflower"] = R.drawable.cauliflower
-        HashMapForLocal["Fruit and Vegi"] = R.drawable.giphy
-        HashMapForLocal["Dancing Vegi"] = R.drawable.vegjig
+        hashMapForLocal = HashMap()
+        hashMapForLocal["Fruits"] = R.drawable.fruit
+        hashMapForLocal["Cauliflower"] = R.drawable.cauliflower
+        hashMapForLocal["Roots and Tubers"] = R.drawable.arrowroot
+        hashMapForLocal["Waru and Ngwaci"] = R.drawable.potatowaru
     }
 
     override fun onStop() {
@@ -141,23 +137,25 @@ class HomeActivity : AppCompatActivity(), OnSliderClickListener, ViewPagerEx.OnP
     }
 
     override fun onSliderClick(slider: BaseSliderView) {
-
-//        Log.e("silder clicked:", " ${slider.bundle["extra"]}")
+        // for debug
+        // Log.e("silder clicked:", " ${slider.bundle["extra"]}")
         //  Toast.makeText(this,slider.getBundle().get("extra")+ "",Toast.LENGTH_SHORT).show();
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
     override fun onPageSelected(position: Int) {
-//        Log.d("Slider Demo", "Page Change:$position")
+        // for debug
+        // Log.d("Slider Demo", "Page Change:$position")
     }
 
     override fun onPageScrollStateChanged(state: Int) {}
-
-    // Bottom
+    // end top section
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Bottom section
     private fun prepareItem() {
-//        var item = Item(R.drawable.shutterstock, "Flower", "Price: KSh. 30")
-//        itemList.add(item)
+        // var item = Item(R.drawable.shutterstock, "Flower", "Price: KSh. 30")
+        // itemList.add(item)
         itemList.add(ItemModel(R.drawable.shutterstock, "Cauliflower & Broccoli", "Price: KSh. 30"))
         itemList.add(ItemModel(R.drawable.apple, "Fruit", "Price: KSh. 150"))
         itemList.add(ItemModel(R.drawable.lettuce2, "Leafy Greens", "Price: KSh. 70"))
@@ -205,8 +203,9 @@ class HomeActivity : AppCompatActivity(), OnSliderClickListener, ViewPagerEx.OnP
             R.id.root -> navigationItemActivity("root")
             R.id.nav_send -> startActivity(Intent(this@HomeActivity, ContactActivity::class.java))
             R.id.mycart -> startActivity(Intent(this@HomeActivity, MyCartActivity::class.java))
+            R.id.logout -> logOutUser()
         }
-        val drawerLayout = findViewById<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawer_layout)
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
@@ -264,6 +263,20 @@ class HomeActivity : AppCompatActivity(), OnSliderClickListener, ViewPagerEx.OnP
         }
         return result
     }
+    private fun logOutUser(){
+        // Shared Prefs
+        val sharedPref: SharedPreferences = getSharedPreferences("user-welcome", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.apply {
+            putBoolean("user-welcome", false)
+        }.apply()
+        // sign out firebase user, exit to login screen and clear back stack
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        FirebaseAuth.getInstance().signOut()
+        startActivity(intent)
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.home_menu, menu)

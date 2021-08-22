@@ -24,10 +24,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-/**
- * Created by Rahul Khatri on 26, January, 2021.
- * github.com/rahulkhatri19
- **/
+
 class CategoryItemAdapter (val itemList: List<FoodDetailModel>, val context: Context) : RecyclerView.Adapter<CategoryItemAdapter.MyViewHolder>() {
 
     class MyViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {

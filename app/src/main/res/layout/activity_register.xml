@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".activity.RegisterActivity">
 
 
@@ -49,6 +51,7 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:autofillHints="Email Address"
+        android:hint="Email Address"
 
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
@@ -66,6 +69,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:autofillHints="Password"
+        android:hint="Password"
 
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
@@ -81,16 +85,16 @@
         android:id="@+id/tv_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login Here"
+        android:text="@string/log_cta"
         android:textSize="18sp"
         android:textColor="#055000"
-        app:layout_constraintBottom_toTopOf="@id/btn_login"
-        app:layout_constraintHorizontal_bias=".8"
-        app:layout_constraintVertical_bias="0"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_password" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintVertical_bias="0.3"/>
     <Button
         android:id="@+id/btn_register"
         android:layout_width="0dp"

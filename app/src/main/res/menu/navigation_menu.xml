@@ -26,14 +26,13 @@
             android:icon="@drawable/cartpng"
             android:title="My Cart" />
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Contact Seller" />
-        </menu>
-    </item>
+    <item
+        android:id="@+id/nav_send"
+        android:icon="@drawable/ic_menu_send"
+        android:title="Contact Seller" />
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        android:title="Log Out" />
 
 </menu>

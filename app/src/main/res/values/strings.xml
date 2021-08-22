@@ -48,4 +48,6 @@
     <string name="addToCart">Add to Cart</string>
     <string name="bucket">bucket</string>
     <string name="cart">Mobile</string>
+    <string name="reg_cta">Don\'t have and account? Register here.</string>
+    <string name="log_cta">Already registered? Login here.</string>
 </resources>

@@ -40,7 +40,6 @@ class CartActivity : AppCompatActivity() {
                     data.ref.removeValue()
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
 
             }

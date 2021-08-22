@@ -1,7 +1,9 @@
 package com.example.mamamboga.activity
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import com.example.mamamboga.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,39 +26,34 @@ class LoginActivity : AppCompatActivity() {
     private var etEmail: EditText? = null
     private var etPassword: EditText? = null
     private var btnLogin: Button? = null
-    private var btnCreateAccount: Button? = null
+    private var tvCreateAccount: TextView? = null
     private var myProgressBar: ProgressDialog? = null
     //Firebase references
     private var myAuth: FirebaseAuth? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        // Switch to register screen
-        val intentRegister = Intent(this, RegisterActivity::class.java)
-        val registerText = findViewById<TextView>(R.id.tv_register)
-        registerText.setOnClickListener(){
-            startActivity(intentRegister)
-        }
-        //Login Button Logic
-
-        // end Login Button Logic
+        initialise()
     }
     private fun initialise() {
         etEmail = findViewById<View>(R.id.et_email) as EditText
         etPassword = findViewById<View>(R.id.et_password) as EditText
-        btnLogin = findViewById(R.id.btn_login)
-        btnCreateAccount = findViewById<View>(R.id.btn_register) as Button
+        btnLogin = findViewById<View>(R.id.btn_login) as Button
+        tvCreateAccount = findViewById<View>(R.id.tv_register) as TextView
         myProgressBar = ProgressDialog(this)
         myAuth = FirebaseAuth.getInstance()
-        btnCreateAccount!!
-            .setOnClickListener { startActivity(Intent(this@LoginActivity,
-                RegisterActivity::class.java)) }
-        btnLogin!!.setOnClickListener {
-            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
+        // Switch to register screen
+        tvCreateAccount!!.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+        }
 
+        btnLogin!!.setOnClickListener {
+            println(":::login button clicked:::")
+            // val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            // startActivity(intent)
             loginUser()
         }
     }
@@ -66,7 +63,8 @@ class LoginActivity : AppCompatActivity() {
 
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
 
-            myProgressBar!!.setMessage("Registering User...")
+            // Show logging in modal.
+            myProgressBar!!.setMessage("Logging in ...")
             myProgressBar!!.show()
 
             Log.d(TAG, "Logging in user.")
@@ -77,6 +75,12 @@ class LoginActivity : AppCompatActivity() {
                     myProgressBar!!.hide()
 
                     if (task.isSuccessful) {
+                        // Update shared prefs to indicate user is logged in
+                        val sharedPref: SharedPreferences = getSharedPreferences("user-welcome", Context.MODE_PRIVATE)
+                        val editor = sharedPref.edit()
+                        editor.apply {
+                            putBoolean("user-welcome", true)
+                        }.apply()
                         // Sign in success, update UI with signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
                         updateUI()
@@ -93,7 +97,13 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun updateUI() {
         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
+        finish()
+    }
+    private fun goToRegister(){
+        val intentRegister = Intent(this@LoginActivity, RegisterActivity::class.java)
+        intentRegister.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intentRegister)
     }
 }

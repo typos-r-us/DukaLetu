@@ -41,10 +41,9 @@ class RegisterActivity : AppCompatActivity() {
         //
 
         // Switch to login screen
-        val intentLogin = Intent(this, LoginActivity::class.java)
         val registerText = findViewById<TextView>(R.id.tv_login)
         registerText.setOnClickListener(){
-            startActivity(intentLogin)
+            goToLogin()
         }
         initialise()
     }
@@ -56,6 +55,7 @@ class RegisterActivity : AppCompatActivity() {
         myDatabase = FirebaseDatabase.getInstance()
         myDatabaseReference = myDatabase!!.reference!!.child("Users")
         myAuth = FirebaseAuth.getInstance()
+
         btnCreateAccount!!.setOnClickListener { createNewAccount() }
     }
     private fun createNewAccount() {
@@ -105,13 +105,13 @@ class RegisterActivity : AppCompatActivity() {
         startActivity(intent)
     }
     private fun verifyEmail() {
-        val mUser = myAuth!!.currentUser;
-        mUser!!.sendEmailVerification()
+        val myUser = myAuth!!.currentUser;
+        myUser!!.sendEmailVerification()
             .addOnCompleteListener(this) { task ->
 
                 if (task.isSuccessful) {
                     Toast.makeText(this@RegisterActivity,
-                        "Verification email sent to " + mUser.getEmail(),
+                        "Verification email sent to " + myUser.getEmail(),
                         Toast.LENGTH_SHORT).show()
                 } else {
                     Log.e(TAG, "sendEmailVerification", task.exception)
@@ -120,5 +120,10 @@ class RegisterActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+    private fun goToLogin(){
+        val intentLogin = Intent(this@RegisterActivity, LoginActivity::class.java)
+        intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intentLogin)
     }
 }
