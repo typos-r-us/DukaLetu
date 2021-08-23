@@ -6,6 +6,7 @@ import com.example.mamamboga.utils.CustomProgressBar
 import com.example.mamamboga.utils.SharedPreferenceUtils
 import com.example.mamamboga.R
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -78,11 +80,13 @@ class CategoryItemActivity : AppCompatActivity() {
 
         val adapter: FirebaseRecyclerAdapter<FoodDetailModel, CategoryItemHolder> = object : FirebaseRecyclerAdapter<FoodDetailModel, CategoryItemHolder>(options) {
 
+            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun onBindViewHolder(viewHolder: CategoryItemHolder, position: Int, model: FoodDetailModel) {
 
                 Picasso.with(baseContext).load(model.foodImage).placeholder(R.drawable.placeholder).into(viewHolder.ivFood)
                 viewHolder.tvName.setText(model.foodName)
                 viewHolder.tvLocalName.setText(model.localFoodName)
+                // viewHolder.ivFood.clipToOutline=true
 
                 CustomProgressBar.dismissProgressBar()
                 val clickItem: FoodDetailModel = model
@@ -146,12 +150,7 @@ class CategoryItemActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-//        CustomProgressBar.ProgressBar(this, "Please Wait ...")
-        /*progressDialog = ProgressDialog(this)
-        progressDialog?.setMessage("Please wait ...")
-        progressDialog?.setCancelable(false)
-        progressDialog?.show()
-        loadData()*/
+
         val ab = supportActionBar
         if (ab != null) {
             ab.setTitle(SharedPreferenceUtils(this).getCategoryItem()?.substring(0, 1)?.toUpperCase() + SharedPreferenceUtils(this).getCategoryItem()?.substring(1))

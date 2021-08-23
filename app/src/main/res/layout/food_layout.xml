@@ -17,14 +17,14 @@
         android:orientation="horizontal"
         android:padding="8dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_food"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
-            android:contentDescription="@string/food_item_image"
-            android:scaleType="centerCrop"
-            android:src="@drawable/cauliflower" />
+            android:src="@drawable/cauliflower"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#055000"/>
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -55,7 +55,6 @@
                 android:text="@string/vegetable_local_name"
                 android:textAlignment="center"
                 android:textSize="18sp" />
-            <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
 
         </RelativeLayout>
     </LinearLayout>
